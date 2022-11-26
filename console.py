@@ -129,40 +129,6 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
             return False
         print(print_list)
-
-    def do_update(self, line):
-        """Update instance based on cls name & id by adding or updating attr"""
-        args = shlex.split(line)
-        if not self.verify_class(args):
-            return
-        if not self.verify_id(args):
-            return
-        if not self.verify_attribute(args):
-            return
-        string_key = str(args[0]) + '.' + str(args[1])
-        objects = models.storage.all()
-        my_dict = objects[string_key].to_dict()
-        attr_name = args[2]
-        attr_value = args[3]
-        for (key, value) in my_dict.items():
-            try:
-                if attr_name in key:
-                    obj_dir = objects[string_key].__dir__()
-                    if key in obj_dir:
-                        val_c_attr = obj_dir[obj_dir.index(key)]
-                        obj = eval('objects[string_key].__class__.' +
-                                   val_c_attr)
-                        if type(obj) is list:
-                            print('converting list')
-                            attr_value = eval(attr_value,
-                                              {'__builtins__': None},
-                                              {})
-                        else:
-                            attr_value = obj.__class__(attr_value)
-            except:
-                return
-        setattr(objects[string_key], attr_name, attr_value)
-        objects[string_key].save()
         
         
     def do_update(self, argv):
